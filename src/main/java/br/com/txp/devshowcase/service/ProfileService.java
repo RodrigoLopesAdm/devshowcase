@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.txp.devshowcase.dto.ProfileRequestDTO;
 import br.com.txp.devshowcase.dto.ProfileResponseDTO;
+import br.com.txp.devshowcase.exception.ResourceNotFoundException;
 import br.com.txp.devshowcase.model.Profile;
 import br.com.txp.devshowcase.repository.ProfileRepository;
 
@@ -31,7 +32,8 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileResponseDTO buscarPorId(Long id) {
         Profile profile = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Perfil não encontrado"));
 
         return ProfileResponseDTO.fromEntity(profile);
     }
